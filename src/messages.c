@@ -1526,6 +1526,15 @@ void set_setting(coordinates_t loc, char *name, char *value, FILE *rsp)
 			return;
 		}
 		SET_DEF_DEFMON_DESK(window_gap, wg)
+	} else if (streq("initial_polarity", name)) {
+		child_polarity_t p;
+		if (parse_child_polarity(value, &p)) {
+			/* initial_polarity = p; */
+			SET_DEF_DEFMON_DESK(initial_polarity, p)
+		} else {
+			fail(rsp, "config: %s: Invalid value: '%s' duh.\n", name, value);
+			return;
+		}
 #undef SET_DEF_DEFMON_DESK
 #define SET_DEF_MON_DESK(k, v) \
 		if (loc.desktop != NULL) { \
@@ -1615,14 +1624,6 @@ void set_setting(coordinates_t loc, char *name, char *value, FILE *rsp)
 	SET_COLOR(focused_border_color)
 	SET_COLOR(presel_feedback_color)
 #undef SET_COLOR
-	} else if (streq("initial_polarity", name)) {
-		child_polarity_t p;
-		if (parse_child_polarity(value, &p)) {
-			initial_polarity = p;
-		} else {
-			fail(rsp, "config: %s: Invalid value: '%s'.\n", name, value);
-			return;
-		}
 	} else if (streq("automatic_scheme", name)) {
 		automatic_scheme_t a;
 		if (parse_automatic_scheme(value, &a)) {
@@ -1819,6 +1820,14 @@ void get_setting(coordinates_t loc, char *name, FILE* rsp)
 		} else {
 			fprintf(rsp, "%i", window_gap);
 		}
+	} else if (streq("initial_polarity", name)) {
+		if (loc.desktop != NULL) {
+			fprintf(rsp, "%s", CHILD_POL_STR(loc.desktop->initial_polarity));
+		} else if (loc.monitor != NULL) {
+			fprintf(rsp, "%s", CHILD_POL_STR(loc.monitor->initial_polarity));
+		} else {
+			fprintf(rsp, "%s", CHILD_POL_STR(initial_polarity));
+		}
 #define GET_DEF_MON_DESK(k) \
 		if (loc.desktop != NULL) { \
 			fprintf(rsp, "%i", loc.desktop->k); \
@@ -1848,8 +1857,6 @@ void get_setting(coordinates_t loc, char *name, FILE* rsp)
 		fprintf(rsp, "%s", external_rules_command);
 	} else if (streq("status_prefix", name)) {
 		fprintf(rsp, "%s", status_prefix);
-	} else if (streq("initial_polarity", name)) {
-		fprintf(rsp, "%s", CHILD_POL_STR(initial_polarity));
 	} else if (streq("automatic_scheme", name)) {
 		fprintf(rsp, "%s", AUTO_SCM_STR(automatic_scheme));
 	} else if (streq("mapping_events_count", name)) {

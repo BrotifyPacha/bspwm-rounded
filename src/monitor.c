@@ -50,6 +50,7 @@ monitor_t *make_monitor(const char *name, xcb_rectangle_t *rect, uint32_t id)
 	m->padding = padding;
 	m->border_width = border_width;
 	m->window_gap = window_gap;
+	m->initial_polarity = initial_polarity;
 	m->root = XCB_NONE;
 	m->prev = m->next = NULL;
 	m->desk = m->desk_head = m->desk_tail = NULL;

@@ -355,7 +355,11 @@ node_t *insert_node(monitor_t *m, desktop_t *d, node_t *n, node_t *f)
 				}
 				c->parent = p;
 				f->parent = c;
-				if (initial_polarity == FIRST_CHILD) {
+				child_polarity_t polarity = d->initial_polarity;
+				if (polarity == NULL) {
+					polarity = m->initial_polarity;
+				}
+				if (polarity == FIRST_CHILD) {
 					c->first_child = n;
 					c->second_child = f;
 				} else {

@@ -279,6 +279,7 @@ struct desktop_t {
 	uint32_t id;
 	layout_t layout;
 	layout_t user_layout;
+	child_polarity_t initial_polarity;
 	node_t *root;
 	node_t *focus;
 	desktop_t *prev;
@@ -301,6 +302,7 @@ struct monitor_t {
 	int window_gap;
 	unsigned int border_width;
 	unsigned int border_radius;
+	child_polarity_t initial_polarity;
 	xcb_rectangle_t rectangle;
 	desktop_t *desk;
 	desktop_t *desk_head;

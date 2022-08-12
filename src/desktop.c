@@ -244,6 +244,7 @@ desktop_t *make_desktop(const char *name, uint32_t id)
 	d->prev = d->next = NULL;
 	d->root = d->focus = NULL;
 	d->user_layout = LAYOUT_TILED;
+	d->initial_polarity = initial_polarity;
 	d->layout = single_monocle ? LAYOUT_MONOCLE : LAYOUT_TILED;
 	d->padding = (padding_t) PADDING;
 	d->window_gap = window_gap;
